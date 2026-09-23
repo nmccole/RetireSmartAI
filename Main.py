@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 print("=== RetireSmart AI ===")
 
 # Client Information
-current_age = 20
+current_age = 25
 retirement_age = 65
-current_savings = 10000
-annual_contribution = 8000
+current_savings = 50000
+annual_contribution = 25000
 
 retirement_goal = 1000000
 inflation_rate = 0.03
@@ -16,8 +16,8 @@ simulations = 10000
 
 # Optional Portfolio Allocation
 
-stocks = 70
-bonds = 30
+stocks = 60
+bonds = 40
 
 # Choose:
 # Conservative
@@ -156,4 +156,51 @@ plt.hist(results, bins=30)
 plt.title("RetireSmart AI Simulation Results")
 plt.xlabel("Portfolio Value at Retirement")
 plt.ylabel("Number of Simulations")
+plt.show()
+
+# Create Retirement Outcome Chart
+
+plt.figure(figsize=(10, 6))
+
+# Histogram
+plt.hist(
+    results,
+    bins=30,
+    color="skyblue",
+    edgecolor="black"
+)
+
+# Retirement Goal Line
+plt.axvline(
+    target,
+    color="red",
+    linestyle="--",
+    linewidth=3,
+    label="Retirement Goal"
+)
+
+# Median Outcome Line
+plt.axvline(
+    median_balance,
+    color="green",
+    linestyle="-",
+    linewidth=3,
+    label="Median Outcome"
+)
+
+# Titles and Labels
+plt.title(
+    "RetireSmart AI\nRetirement Outcome Distribution"
+)
+
+plt.xlabel("Portfolio Value at Retirement ($)")
+plt.ylabel("Number of Simulations")
+
+# Legend
+plt.legend()
+
+# Grid
+plt.grid(True, alpha=0.3)
+
+# Show Chart
 plt.show()
