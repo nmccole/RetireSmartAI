@@ -10,7 +10,11 @@ retirement_age = 65
 current_savings = 50000
 annual_contribution = 25000
 
-retirement_goal = 1000000
+# Retirement Lifestyle Analysis
+target_retirement_cash_flow = 80000
+required_portfolio = target_retirement_cash_flow / 0.04
+
+
 inflation_rate = 0.03
 simulations = 10000
 
@@ -40,7 +44,35 @@ if stocks is not None and bonds is not None:
         (bonds / 100) * 0.05
     )
 
+if stocks >= 80:
+    portfolio_style = "Aggressive"
+
+elif stocks >= 60:
+    portfolio_style = "Moderate"
+
+elif stocks >= 40:
+    portfolio_style = "Balanced"
+
+elif stocks >= 20:
+    portfolio_style = "Conservative"
+
+else:
+    portfolio_style = "Capital Preservation"
+
+
 # Otherwise use risk profile
+
+if stocks is not None and bonds is not None:
+
+    mean_return = (
+        (stocks / 100) * 0.10 +
+        (bonds / 100) * 0.04
+    )
+
+    volatility = (
+        (stocks / 100) * 0.15 +
+        (bonds / 100) * 0.05
+    )
 
 elif risk_profile == "Conservative":
     mean_return = 0.05
@@ -53,6 +85,7 @@ elif risk_profile == "Moderate":
 else:
     mean_return = 0.09
     volatility = 0.18
+
 
 
 # Years to retirement
@@ -89,7 +122,7 @@ best_case = results[int(len(results) * 0.90)]
 inflation_rate = 0.03
 
 # Inflate today's $1M goal into future dollars
-target = retirement_goal * ((1 + inflation_rate) ** years)
+target = required_portfolio * ((1 + inflation_rate) ** years)
 
 successes = 0
 
@@ -98,6 +131,16 @@ for result in results:
         successes += 1
 
 success_rate = (successes / len(results)) * 100
+
+if success_rate >= 80:
+    retirement_status = "On Track"
+
+elif success_rate >= 60:
+    retirement_status = "Borderline"
+
+else:
+    retirement_status = "Below Target"
+
 
 # Retirement readiness score
 
@@ -113,42 +156,42 @@ elif success_rate >= 50:
 else:
     summary = "Consider increasing contributions, delaying retirement, or adjusting investment risk."
 
+
 print("\n=== AI SUMMARY ===")
 print(summary)
 
-# Allocation message
-
-if stocks is not None and bonds is not None:
-
-    print("\n=== PORTFOLIO ALLOCATION ===")
-    print("Stocks:", stocks, "%")
-    print("Bonds:", bonds, "%")
-
-    print("\nAllocation Override Active")
-    print("RetireSmart AI is using your portfolio allocation instead of the risk profile.")
-
-else:
-
-    print("\n=== PORTFOLIO ALLOCATION ===")
-    print("No allocation provided.")
-    print("Using Risk Profile:", risk_profile)
-
-
 # Report
-print("\n=== CLIENT REPORT ===")
-print("Risk Profile:", risk_profile)
+print("\n=== CLIENT DETAILS ===")
 print("Current Age:", current_age)
 print("Retirement Age:", retirement_age)
 print("Years Until Retirement:", years)
 
-print("\n=== RESULTS ===")
+# Allocation message
+
+print("\n=== PORTFOLIO ALLOCATION ===")
+print("Stocks:", stocks, "%")
+print("Bonds:", bonds, "%")
+print("Portfolio Style:", portfolio_style)
+print("Expected Return:", round(mean_return * 100, 1), "%")
+print("Expected Volatility:", round(volatility * 100, 1), "%")
+
+
+print("\n=== RETIREMENT GOAL ANALYSIS ===")
+print("Target Retirement Cash Flow: $",
+      target_retirement_cash_flow)
+print("Required Portfolio: $", round(required_portfolio, 2))
+
+
+print("\n=== OUTCOMES ===")
 print("Median Outcome: $", round(median_balance, 2))
 print("Worst 10% Outcome: $", round(worst_case, 2))
 print("Best 10% Outcome: $", round(best_case, 2))
 
 print("Inflation-Adjusted Goal: $", round(target, 2))
 print("\nSuccess Rate:", round(success_rate, 1), "%")
-print("Retirement Readiness:", rating)
+print("Status:", retirement_status)
+
+
 print("Simulations Run:", simulations)
 
 
